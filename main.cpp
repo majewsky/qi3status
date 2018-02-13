@@ -24,23 +24,11 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QThread>
 
-class TestProvider : public Provider {
-  public:
-    virtual ~TestProvider() {}
-
-    virtual QString id() const { return QStringLiteral("test"); }
-    virtual QVector<Fact> render() const {
-      return {
-        Fact { Fact::Network, Fact::Passive, QStringLiteral("1.2.3.4") },
-        Fact { Fact::Battery, Fact::Positive, QStringLiteral("100%") },
-        Fact { Fact::Network, Fact::Passive, QStringLiteral("5.6.7.8") },
-      };
-    }
-};
-
 int main(int argc, char** argv) {
   QCoreApplication app(argc, argv);
-  Renderer *r = new Renderer({new TestProvider}, &app);
+  Renderer* r = new Renderer({
+    buildUpowerProvider(&app),
+  }, &app);
 
   //every full second, wake up the renderer regardless of other events
   QThread::create([r] {

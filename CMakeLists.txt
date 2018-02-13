@@ -10,6 +10,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_executable(qi3status
     main.cpp
     renderer.cpp
+    upower.cpp
 )
 
 qt5_use_modules(qi3status Core DBus)

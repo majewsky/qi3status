@@ -78,6 +78,10 @@ Renderer::Renderer(const QVector<Provider*>& providers, QObject* parent)
   puts("{\"version\":1}\n[");
   //render once immediately on startup, before entering event loop
   render();
+
+  for (Provider* p: m_providers) {
+    p->connectUpdatesTo(this, SLOT(render()));
+  }
 }
 
 Renderer::~Renderer() {
