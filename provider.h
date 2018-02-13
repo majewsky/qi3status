@@ -34,6 +34,7 @@ struct Fact {
   enum Priority {
     Positive,
     Passive,
+    Muted,
     Danger,
   };
 

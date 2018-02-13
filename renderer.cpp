@@ -33,7 +33,7 @@ static const QString keySeparator           = QStringLiteral("separator");
 static const QString keySeparatorBlockWidth = QStringLiteral("separator_block_width");
 static const QString keyColor               = QStringLiteral("color");
 static const QString keyUrgent              = QStringLiteral("urgent");
-static const QString colorHeading  = QStringLiteral("#AAAAAA");
+static const QString colorMuted    = QStringLiteral("#AAAAAA");
 static const QString colorPositive = QStringLiteral("#00AA00");
 static const QString colorPassive  = QStringLiteral("#00AAAA");
 static const QString colorDanger   = QStringLiteral("#AA0000");
@@ -65,6 +65,7 @@ static const QString& colorForFactPriority(Fact::Priority p) {
   switch (p) {
     case Fact::Positive: return colorPositive;
     case Fact::Passive:  return colorPassive;
+    case Fact::Muted:    return colorMuted;
     case Fact::Danger:   return colorDanger;
     default:             return colorUnknown;
   }
@@ -130,7 +131,7 @@ static QJsonArray renderFacts(QVector<Fact>& facts) {
       QJsonObject block = {
         { keyName, label },
         { keyFullText, label },
-        { keyColor, colorHeading },
+        { keyColor, colorMuted },
         { keySeparator, false },
       };
       blocks.append(block);

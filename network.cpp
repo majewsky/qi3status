@@ -55,8 +55,10 @@ QVector<Fact> NetworkProvider::render() const {
       if (!ip.scopeId().isEmpty()) {
         continue;
       }
+      //distinguish v4 and v6 IPs by color
+      const bool isIPv6 = ip.protocol() == QAbstractSocket::IPv6Protocol;
 
-      result.append(Fact { Fact::Network, Fact::Passive, ip.toString() });
+      result.append(Fact { Fact::Network, isIPv6 ? Fact::Muted : Fact::Passive, ip.toString() });
     }
   }
 
