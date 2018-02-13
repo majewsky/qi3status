@@ -48,10 +48,11 @@ class Provider {
 
     virtual QString id() const = 0;
     virtual QVector<Fact> render() const = 0;
-    virtual void connectUpdatesTo(QObject* object, const char* slot) = 0;
+    virtual void connectUpdatesTo(QObject* object, const char* slot) { Q_UNUSED((object, slot)) }
     virtual void execCommand(const QStringList& args) { Q_UNUSED(args) }
 };
 
+Provider* buildNetworkProvider();
 Provider* buildUpowerProvider(QObject* parent = Q_NULLPTR);
 
 #endif // QI3STATUS_H

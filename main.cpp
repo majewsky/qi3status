@@ -27,6 +27,7 @@
 int main(int argc, char** argv) {
   QCoreApplication app(argc, argv);
   Renderer* r = new Renderer({
+    buildNetworkProvider(),
     buildUpowerProvider(&app),
   }, &app);
 
