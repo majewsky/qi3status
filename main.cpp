@@ -19,8 +19,10 @@
 #include "provider.h"
 #include "renderer.h"
 
+#include <time.h>
 #include <unistd.h>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QThread>
 
 class TestProvider : public Provider {
   public:
@@ -38,11 +40,20 @@ class TestProvider : public Provider {
 
 int main(int argc, char** argv) {
   QCoreApplication app(argc, argv);
-  Renderer r({new TestProvider}, &app);
+  Renderer *r = new Renderer({new TestProvider}, &app);
 
-  for (;;) {
-    r.render();
+  //every full second, wake up the renderer regardless of other events
+  QThread::create([r] {
+    for (;;) {
+      //wait for next full second
+      struct timespec ts;
+      clock_gettime(CLOCK_REALTIME, &ts);
+      usleep((1000000000 - ts.tv_nsec) / 1000);
 
-    sleep(1);
-  }
+      //call r->render() across thread boundaries
+      QMetaObject::invokeMethod(r, &Renderer::render, Qt::QueuedConnection);
+    }
+  })->start();
+
+  return app.exec();
 }
